@@ -32,6 +32,54 @@ app.get("/health-check", async (req, res) => {
   }
 });
 
+app.get("/users", async (req, res) => {
+  const users = await client.query(
+    "SELECT * FROM users ORDER BY user_id"
+  );
+  res.status(200).json(users);
+});
+
+app.post("/users", async (req, res) => {
+  const user_name = req.body.user_name;
+  const user_isfaculty = req.body.user_isfaculty
+
+  const text = `INSERT INTO users(user_name, user_isfaculty)  VALUES($1,$2)`;
+
+  const values = [user_name, user_isfaculty];
+
+  const postData = await client.query(text, values);
+
+  res.status(201).json(postData);
+});
+
+app.delete<{ user_id: number }>("/users/:user_id", async (req, res) => {
+  const delete_user = req.params.user_id;
+  if (delete_user === undefined) {
+    res.status(404).json(delete_user);
+  } else {
+    await client.query(`DELETE FROM comments WHERE user_id = ${delete_user}`);
+    await client.query(`DELETE FROM resources WHERE user_id = ${delete_user}`);
+    await client.query(`DELETE FROM users WHERE user_id = ${delete_user}`);
+
+    res.status(200).json(delete_user);
+  }
+});
+
+app.patch<{ user_id: number }>("/users/:user_id", async (req, res) => {
+  const patch_user = req.params.user_id;
+  if (patch_user === undefined) {
+    res.status(404).json(patch_user);
+  } else {
+    const new_user_name = req.body.new_user_name;
+
+    await client.query(`UPDATE users SET user_name = '${new_user_name}'  WHERE user_id = ${patch_user}`);
+
+    res.status(200).json(patch_user);
+  }
+});
+
+
+
 connectToDBAndStartListening();
 
 async function connectToDBAndStartListening() {
