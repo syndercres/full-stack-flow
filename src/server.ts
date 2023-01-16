@@ -5,6 +5,7 @@ import { Client } from "pg";
 import { getEnvVarOrFail } from "./support/envVarUtils";
 import { setupDBClientConfig } from "./support/setupDBClientConfig";
 
+//-----------------------------------------------------------------------------------------------------setting DATABASE variables
 dotenv.config(); //Read .env file lines as though they were env vars.
 
 const dbClientConfig = setupDBClientConfig();
@@ -32,11 +33,27 @@ app.get("/health-check", async (req, res) => {
   }
 });
 
+//-----------------------------------------------------------------------------------------------------requests to DATABASE for USERS table
 app.get("/users", async (req, res) => {
   const users = await client.query(
     "SELECT * FROM users ORDER BY user_id"
   );
   res.status(200).json(users);
+});
+
+app.get<{ user_id: number }>("/users/:user_id", async (req, res) =>{
+
+  const user_id = req.params.user_id;
+
+  if (user_id === undefined) {
+    res.status(404).json(user_id);
+  } else {
+   const user = await client.query(`SELECT * FROM users WHERE user_id = ${user_id}`);
+
+
+    res.status(200).json(user);
+  }
+
 });
 
 app.post("/users", async (req, res) => {
@@ -78,8 +95,12 @@ app.patch<{ user_id: number }>("/users/:user_id", async (req, res) => {
   }
 });
 
+//-----------------------------------------------------------------------------------------------------requests to DATABASE for RESOURCES table
+
+//-----------------------------------------------------------------------------------------------------requests to DATABASE for COMMENTS table
 
 
+//-----------------------------------------------------------------------------------------------------connecting to DATABASE
 connectToDBAndStartListening();
 
 async function connectToDBAndStartListening() {
