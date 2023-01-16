@@ -96,6 +96,90 @@ app.patch<{ user_id: number }>("/users/:user_id", async (req, res) => {
 });
 
 //-----------------------------------------------------------------------------------------------------requests to DATABASE for RESOURCES table
+app.get("/resources", async (req, res) => {
+  const resources = await client.query(
+    "SELECT * FROM resources"
+  );
+  res.status(200).json(resources);
+});
+
+app.get<{ resource_id: number }>("/resources/:resource_id", async (req, res) =>{
+
+  const resource_id = req.params.resource_id;
+
+  if (resource_id === undefined) {
+    res.status(404).json(resource_id);
+  } else {
+   const resource = await client.query(`SELECT * FROM resources WHERE resource_id = ${resource_id}`);
+
+
+    res.status(200).json(resource);
+  }
+
+});
+
+app.post("/resources", async (req, res) => {
+  const resource_name = req.body.resource_name;
+  const author_name = req.body.author_name;
+  const user_id = req.body.user_id;
+  const resource_description = req.body.resource_description;
+  const resource_tags = req.body.resource_tags;
+  const resource_content_type = req.body.resource_content_type;
+  const resource_user_recomendation = req.body.resource_user_recomendation;
+  const resource_recomendation_reason = req.body.resource_recomendation_reason;
+  const resource_likes = req.body.resource_likes;
+  const resource_link = req.body.resource_link;
+
+  const text = `INSERT INTO resources (resource_post_date, resource_name, author_name, user_id, resource_description, resource_tags, resource_content_type, resource_user_recomendation, resource_recomendation_reason, resource_likes, resource_link)
+  VALUES (now(),$1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`;
+
+  const values = [resource_name, author_name, user_id, resource_description, resource_tags, resource_content_type, resource_user_recomendation, resource_recomendation_reason, resource_likes, resource_link];
+
+  const postData = await client.query(text, values);
+
+  res.status(201).json(postData);
+});
+
+app.delete<{ resource_id: number }>("/resources/:resource_id", async (req, res) => {
+  const delete_resource = req.params.resource_id;
+  if (delete_resource === undefined) {
+    res.status(404).json(delete_resource);
+  } else {
+    await client.query(`DELETE FROM comments WHERE resource_id = ${delete_resource}`);
+    await client.query(`DELETE FROM resources WHERE resource_id = ${delete_resource}`);
+
+
+    res.status(200).json(delete_resource);
+  }
+});
+
+app.patch<{ resource_id: number }>("/resources/:resource_id", async (req, res) => {
+  const patch_resource = req.params.resource_id;
+  if (patch_resource === undefined) {
+    res.status(404).json(patch_resource);
+  } else {
+  const resource_name = req.body.resource_name;
+  const author_name = req.body.author_name;
+  const user_id = req.body.user_id;
+  const resource_description = req.body.resource_description;
+  const resource_tags = req.body.resource_tags;
+  const resource_content_type = req.body.resource_content_type;
+  const resource_user_recomendation = req.body.resource_user_recomendation;
+  const resource_recomendation_reason = req.body.resource_recomendation_reason;
+  const resource_likes = req.body.resource_likes;
+  const resource_link = req.body.resource_link;
+
+  const text = `UPDATE resources SET resource_post_date = now(), resource_name = $1, author_name = $2, user_id = $3, resource_description = $4, resource_tags = $5, resource_content_type = $6, resource_user_recomendation = $7, resource_recomendation_reason = $8, resource_likes = $9, resource_link = $10
+  
+  WHERE resource_id = ${patch_resource}`;
+
+  const values = [resource_name, author_name, user_id, resource_description, resource_tags, resource_content_type, resource_user_recomendation, resource_recomendation_reason, resource_likes, resource_link];
+
+  const postData = await client.query(text, values);
+
+  res.status(201).json(postData);
+  }
+});
 
 //-----------------------------------------------------------------------------------------------------requests to DATABASE for COMMENTS table
 
