@@ -34,11 +34,12 @@ app.get("/health-check", async (req, res) => {
 });
 
 //-----------------------------------------------------------------------------------------------------requests to DATABASE for USERS table
+//-----------------------------------------------------------------------------------------------------GET request to DATABASE for all users
 app.get("/users", async (req, res) => {
   const users = await client.query("SELECT * FROM users ORDER BY user_id");
   res.status(200).json(users);
 });
-
+//-----------------------------------------------------------------------------------------------------GET request to DATABASE for user by user_id
 app.get<{ user_id: number }>("/users/:user_id", async (req, res) => {
   const user_id = req.params.user_id;
 
@@ -53,6 +54,7 @@ app.get<{ user_id: number }>("/users/:user_id", async (req, res) => {
   }
 });
 
+//-----------------------------------------------------------------------------------------------------POST request to DATABASE for user with BODY
 app.post("/users", async (req, res) => {
   const user_name = req.body.user_name;
   const user_isfaculty = req.body.user_isfaculty;
@@ -66,6 +68,7 @@ app.post("/users", async (req, res) => {
   res.status(201).json(postData);
 });
 
+//-----------------------------------------------------------------------------------------------------DELETE request to DATABASE by user_id 
 app.delete<{ user_id: number }>("/users/:user_id", async (req, res) => {
   const delete_user = req.params.user_id;
   if (delete_user === undefined) {
@@ -79,6 +82,7 @@ app.delete<{ user_id: number }>("/users/:user_id", async (req, res) => {
   }
 });
 
+//-----------------------------------------------------------------------------------------------------PATCH request to DATABASE for user_name by user_id
 app.patch<{ user_id: number }>("/users/:user_id", async (req, res) => {
   const patch_user = req.params.user_id;
   if (patch_user === undefined) {
@@ -95,11 +99,13 @@ app.patch<{ user_id: number }>("/users/:user_id", async (req, res) => {
 });
 
 //-----------------------------------------------------------------------------------------------------requests to DATABASE for RESOURCES table
+//-----------------------------------------------------------------------------------------------------GET request to DATABASE for ALL resources
 app.get("/resources", async (req, res) => {
   const resources = await client.query("SELECT * FROM resources");
   res.status(200).json(resources);
 });
 
+//-----------------------------------------------------------------------------------------------------GET request to DATABASE for resource by resource_id
 app.get<{ resource_id: number }>(
   "/resources/:resource_id",
   async (req, res) => {
@@ -117,6 +123,7 @@ app.get<{ resource_id: number }>(
   }
 );
 
+//-----------------------------------------------------------------------------------------------------POST request to DATABASE for resource with BODY
 app.post("/resources", async (req, res) => {
   const resource_name = req.body.resource_name;
   const author_name = req.body.author_name;
@@ -150,6 +157,7 @@ app.post("/resources", async (req, res) => {
   res.status(201).json(postData);
 });
 
+//-----------------------------------------------------------------------------------------------------DELETE request to DATABASE by resource_id
 app.delete<{ resource_id: number }>(
   "/resources/:resource_id",
   async (req, res) => {
@@ -169,6 +177,7 @@ app.delete<{ resource_id: number }>(
   }
 );
 
+//-----------------------------------------------------------------------------------------------------PATCH request to DATABASE for resource by resource_id
 app.patch<{ resource_id: number }>(
   "/resources/:resource_id",
   async (req, res) => {
@@ -213,11 +222,13 @@ app.patch<{ resource_id: number }>(
 );
 
 //-----------------------------------------------------------------------------------------------------requests to DATABASE for COMMENTS table
+//-----------------------------------------------------------------------------------------------------GET request to DATABASE for ALL comments
 app.get("/comments", async (req, res) => {
   const comments = await client.query("SELECT * FROM comments");
   res.status(200).json(comments);
 });
 
+//-----------------------------------------------------------------------------------------------------GET request to DATABASE for comments by resource_id
 app.get<{ resource_id: number }>("/comments/:resource_id", async (req, res) => {
   const resource_id = req.params.resource_id;
 
@@ -232,6 +243,7 @@ app.get<{ resource_id: number }>("/comments/:resource_id", async (req, res) => {
   }
 });
 
+//-----------------------------------------------------------------------------------------------------DELETE request to DATABASE by comment_id
 app.delete<{ comment_id: number }>(
   "/comments/:comment_id",
   async (req, res) => {
@@ -248,6 +260,7 @@ app.delete<{ comment_id: number }>(
   }
 );
 
+//-----------------------------------------------------------------------------------------------------PATCH request to DATABASE by comment_id
 app.patch<{ comment_id: number }>("/comments/:comment_id", async (req, res) => {
   const patch_comment = req.params.comment_id;
 
