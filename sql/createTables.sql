@@ -32,24 +32,23 @@ CREATE TABLE users (
 	user_id SERIAL PRIMARY KEY,
 	user_name VARCHAR(255),
   	user_isfaculty BOOLEAN
-)
+);
+
 INSERT INTO users (user_name, user_isfaculty)
 VALUES 
-('John Smith', true),
-('Jane Doe', false),
-('Bob Johnson', true),
-('Samantha Smith', false),
-('Michael Brown', true),
-('Emily Davis', false),
-('Jacob Miller', true),
-('Nicholas Garcia', false),
-('Andrew Martinez', true),
-('Isabella Taylor', false),
-('William Anderson', true),
-('Ava Thomas', false),
-('Joshua Jackson', true),
-('Mia Lewis', false),
-('Matthew Harris', true);
+('Tinashe Gutu', true),
+('Sinbad Creswell', true),
+('Maghfoor Ahmed', true),
+('Didier Osindero', false),
+('Katrina Woolley', false),
+('Ben Murray', false),
+('Zac Gladman', false),
+('Maria Ten', false),
+('Grace Kuperman', false),
+('Alessia Borys', false),
+('Josiah Adiojutelegan', false),
+('Neil Bogie', true),
+('Katie Davies', true);
 
 
 CREATE TABLE comments(
@@ -60,7 +59,7 @@ CREATE TABLE comments(
   comment_text TEXT,
   comment_likes INT,
   comment_time DATE
-)
+);
 
 INSERT INTO comments (user_id, resource_id, comment_text, comment_likes, comment_time)
 VALUES
