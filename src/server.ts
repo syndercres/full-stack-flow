@@ -131,13 +131,14 @@ app.post("/resources", async (req, res) => {
   const resource_description = req.body.resource_description;
   const resource_tags = req.body.resource_tags;
   const resource_content_type = req.body.resource_content_type;
-  const resource_user_recomendation = req.body.resource_user_recomendation;
-  const resource_recomendation_reason = req.body.resource_recomendation_reason;
+  const resource_user_recommendation = req.body.resource_user_recommendation;
+  const resource_recommendation_reason = req.body.resource_recommendation_reason;
   const resource_likes = req.body.resource_likes;
+  const resource_dislikes = req.body.resource_dislikes
   const resource_link = req.body.resource_link;
 
-  const text = `INSERT INTO resources (resource_post_date, resource_name, author_name, user_id, resource_description, resource_tags, resource_content_type, resource_user_recomendation, resource_recomendation_reason, resource_likes, resource_link)
-  VALUES (now(),$1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`;
+  const text = `INSERT INTO resources (resource_post_date, resource_name, author_name, user_id, resource_description, resource_tags, resource_content_type, resource_user_recommendation, resource_recommendation_reason, resource_likes, resource_link)
+  VALUES (now(),$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`;
 
   const values = [
     resource_name,
@@ -146,9 +147,10 @@ app.post("/resources", async (req, res) => {
     resource_description,
     resource_tags,
     resource_content_type,
-    resource_user_recomendation,
-    resource_recomendation_reason,
+    resource_user_recommendation,
+    resource_recommendation_reason,
     resource_likes,
+    resource_dislikes, 
     resource_link,
   ];
 
@@ -191,13 +193,14 @@ app.patch<{ resource_id: number }>(
       const resource_description = req.body.resource_description;
       const resource_tags = req.body.resource_tags;
       const resource_content_type = req.body.resource_content_type;
-      const resource_user_recomendation = req.body.resource_user_recomendation;
-      const resource_recomendation_reason =
-        req.body.resource_recomendation_reason;
+      const resource_user_recommendation = req.body.resource_user_recommendation;
+      const resource_recommendation_reason =
+        req.body.resource_recommendation_reason;
       const resource_likes = req.body.resource_likes;
+      const resource_dislikes = req.body.resource_dislikes
       const resource_link = req.body.resource_link;
 
-      const text = `UPDATE resources SET resource_post_date = now(), resource_name = $1, author_name = $2, user_id = $3, resource_description = $4, resource_tags = $5, resource_content_type = $6, resource_user_recomendation = $7, resource_recomendation_reason = $8, resource_likes = $9, resource_link = $10
+      const text = `UPDATE resources SET resource_post_date = now(), resource_name = $1, author_name = $2, user_id = $3, resource_description = $4, resource_tags = $5, resource_content_type = $6, resource_user_recommendation = $7, resource_recommendation_reason = $8, resource_likes = $9, resource_dislikes=$10, resource_link = $11
   
   WHERE resource_id = ${patch_resource}`;
 
@@ -208,9 +211,10 @@ app.patch<{ resource_id: number }>(
         resource_description,
         resource_tags,
         resource_content_type,
-        resource_user_recomendation,
-        resource_recomendation_reason,
+        resource_user_recommendation,
+        resource_recommendation_reason,
         resource_likes,
+        resource_dislikes,
         resource_link,
       ];
 
