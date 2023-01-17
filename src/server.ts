@@ -68,7 +68,7 @@ app.post("/users", async (req, res) => {
   res.status(201).json(postData);
 });
 
-//-----------------------------------------------------------------------------------------------------DELETE request to DATABASE by user_id 
+//-----------------------------------------------------------------------------------------------------DELETE request to DATABASE by user_id
 app.delete<{ user_id: number }>("/users/:user_id", async (req, res) => {
   const delete_user = req.params.user_id;
   if (delete_user === undefined) {
@@ -222,7 +222,6 @@ app.patch<{ resource_id: number }>(
 );
 
 //-----------------------------------------------------------------------------------------------------requests to DATABASE for COMMENTS table
-
 
 //-----------------------------------------------------------------------------------------------------connecting to DATABASE
 connectToDBAndStartListening();
