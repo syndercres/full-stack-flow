@@ -132,9 +132,10 @@ app.post("/resources", async (req, res) => {
   const resource_tags = req.body.resource_tags;
   const resource_content_type = req.body.resource_content_type;
   const resource_user_recommendation = req.body.resource_user_recommendation;
-  const resource_recommendation_reason = req.body.resource_recommendation_reason;
+  const resource_recommendation_reason =
+    req.body.resource_recommendation_reason;
   const resource_likes = req.body.resource_likes;
-  const resource_dislikes = req.body.resource_dislikes
+  const resource_dislikes = req.body.resource_dislikes;
   const resource_link = req.body.resource_link;
 
   const text = `INSERT INTO resources (resource_post_date, resource_name, author_name, user_id, resource_description, resource_tags, resource_content_type, resource_user_recommendation, resource_recommendation_reason, resource_likes, resource_link)
@@ -150,7 +151,7 @@ app.post("/resources", async (req, res) => {
     resource_user_recommendation,
     resource_recommendation_reason,
     resource_likes,
-    resource_dislikes, 
+    resource_dislikes,
     resource_link,
   ];
 
@@ -193,11 +194,12 @@ app.patch<{ resource_id: number }>(
       const resource_description = req.body.resource_description;
       const resource_tags = req.body.resource_tags;
       const resource_content_type = req.body.resource_content_type;
-      const resource_user_recommendation = req.body.resource_user_recommendation;
+      const resource_user_recommendation =
+        req.body.resource_user_recommendation;
       const resource_recommendation_reason =
         req.body.resource_recommendation_reason;
       const resource_likes = req.body.resource_likes;
-      const resource_dislikes = req.body.resource_dislikes
+      const resource_dislikes = req.body.resource_dislikes;
       const resource_link = req.body.resource_link;
 
       const text = `UPDATE resources SET resource_post_date = now(), resource_name = $1, author_name = $2, user_id = $3, resource_description = $4, resource_tags = $5, resource_content_type = $6, resource_user_recommendation = $7, resource_recommendation_reason = $8, resource_likes = $9, resource_dislikes=$10, resource_link = $11
