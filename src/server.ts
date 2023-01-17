@@ -37,7 +37,7 @@ app.get("/health-check", async (req, res) => {
 //-----------------------------------------------------------------------------------------------------GET request to DATABASE for all users
 app.get("/users", async (req, res) => {
   const users = await client.query("SELECT * FROM users ORDER BY user_id");
-  res.status(200).json(users);
+  res.status(200).json(users.rows);
 });
 //-----------------------------------------------------------------------------------------------------GET request to DATABASE for user by user_id
 app.get<{ user_id: number }>("/users/:user_id", async (req, res) => {
@@ -50,7 +50,7 @@ app.get<{ user_id: number }>("/users/:user_id", async (req, res) => {
       `SELECT * FROM users WHERE user_id = ${user_id}`
     );
 
-    res.status(200).json(user);
+    res.status(200).json(user.rows);
   }
 });
 
@@ -65,7 +65,7 @@ app.post("/users", async (req, res) => {
 
   const postData = await client.query(text, values);
 
-  res.status(201).json(postData);
+  res.status(201).json(postData.rows);
 });
 
 //-----------------------------------------------------------------------------------------------------DELETE request to DATABASE by user_id
@@ -102,7 +102,7 @@ app.patch<{ user_id: number }>("/users/:user_id", async (req, res) => {
 //-----------------------------------------------------------------------------------------------------GET request to DATABASE for ALL resources
 app.get("/resources", async (req, res) => {
   const resources = await client.query("SELECT * FROM resources");
-  res.status(200).json(resources);
+  res.status(200).json(resources.rows);
 });
 
 //-----------------------------------------------------------------------------------------------------GET request to DATABASE for resource by resource_id
@@ -118,7 +118,7 @@ app.get<{ resource_id: number }>(
         `SELECT * FROM resources WHERE resource_id = ${resource_id}`
       );
 
-      res.status(200).json(resource);
+      res.status(200).json(resource.rows);
     }
   }
 );
@@ -154,7 +154,7 @@ app.post("/resources", async (req, res) => {
 
   const postData = await client.query(text, values);
 
-  res.status(201).json(postData);
+  res.status(201).json(postData.rows);
 });
 
 //-----------------------------------------------------------------------------------------------------DELETE request to DATABASE by resource_id
@@ -216,7 +216,7 @@ app.patch<{ resource_id: number }>(
 
       const postData = await client.query(text, values);
 
-      res.status(201).json(postData);
+      res.status(201).json(postData.rows);
     }
   }
 );
