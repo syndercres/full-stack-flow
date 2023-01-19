@@ -125,6 +125,7 @@ app.get<{ resource_id: number }>(
 
 //-----------------------------------------------------------------------------------------------------POST request to DATABASE for resource with BODY
 app.post("/resources", async (req, res) => {
+  console.log(req.body)
   const resource_name = req.body.resource_name;
   const author_name = req.body.author_name;
   const user_id = req.body.user_id;
@@ -138,7 +139,7 @@ app.post("/resources", async (req, res) => {
   const resource_dislikes = req.body.resource_dislikes;
   const resource_link = req.body.resource_link;
 
-  const text = `INSERT INTO resources (resource_post_date, resource_name, author_name, user_id, resource_description, resource_tags, resource_content_type, resource_user_recommendation, resource_recommendation_reason, resource_likes, resource_link)
+  const text = `INSERT INTO resources (resource_post_date, resource_name, author_name, user_id, resource_description, resource_tags, resource_content_type, resource_user_recommendation, resource_recommendation_reason, resource_likes, resource_dislikes, resource_link)
   VALUES (now(),$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`;
 
   const values = [
