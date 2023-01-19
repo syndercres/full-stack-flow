@@ -228,7 +228,61 @@ app.patch<{ resource_id: number }>(
 );
 
 //-----------------------------------------------------------------------------------------------------requests to DATABASE for COMMENTS table
+//-----------------------------------------------------------------------------------------------------GET request to DATABASE for ALL comments
+app.get("/comments", async (req, res) => {
+  const comments = await client.query("SELECT * FROM comments");
+  res.status(200).json(comments);
+});
 
+//-----------------------------------------------------------------------------------------------------GET request to DATABASE for comments by resource_id
+app.get<{ resource_id: number }>("/comments/:resource_id", async (req, res) => {
+  const resource_id = req.params.resource_id;
+
+  if (resource_id === undefined) {
+    res.status(404).json(resource_id);
+  } else {
+    const resource = await client.query(
+      `SELECT * FROM comments WHERE resource_id = ${resource_id} ORDER BY comment_time`
+    );
+
+    res.status(200).json(resource);
+  }
+});
+
+//-----------------------------------------------------------------------------------------------------DELETE request to DATABASE by comment_id
+app.delete<{ comment_id: number }>(
+  "/comments/:comment_id",
+  async (req, res) => {
+    const delete_comment = req.params.comment_id;
+    if (delete_comment === undefined) {
+      res.status(404).json(delete_comment);
+    } else {
+      await client.query(
+        `DELETE FROM comments WHERE resource_id = ${delete_comment}`
+      );
+
+      res.status(200).json(delete_comment);
+    }
+  }
+);
+
+//-----------------------------------------------------------------------------------------------------PATCH request to DATABASE by comment_id
+app.patch<{ comment_id: number }>("/comments/:comment_id", async (req, res) => {
+  const patch_comment = req.params.comment_id;
+
+  if (patch_comment === undefined) {
+    res.status(404).json(patch_comment);
+  } else {
+    const new_comment_text = req.body.new_comment_text;
+    const text = `UPDATE comments SET comment_text = '${new_comment_text}'
+  
+    WHERE comment_id = ${patch_comment}`;
+
+    const postData = await client.query(text);
+
+    res.status(201).json(postData);
+  }
+});
 //-----------------------------------------------------------------------------------------------------connecting to DATABASE
 connectToDBAndStartListening();
 
