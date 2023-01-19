@@ -125,7 +125,7 @@ app.get<{ resource_id: number }>(
 
 //-----------------------------------------------------------------------------------------------------POST request to DATABASE for resource with BODY
 app.post("/resources", async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   const resource_name = req.body.resource_name;
   const author_name = req.body.author_name;
   const user_id = req.body.user_id;
