@@ -183,10 +183,9 @@ app.delete<{ resource_id: number }>(
 
 //-----------------------------------------------------------------------------------------------------PATCH request to DATABASE tp update likes counter
 app.patch<{ resource_id: number }>(
-  "/resource/like/:resource_id",
+  "/resource/likes/:resource_id",
   async (req, res) => {
     const resource_id = req.params.resource_id;
-    console.log(resource_id);
     try {
       await client.query(
         `UPDATE resources SET resource_likes = (resources.resource_likes + 1) WHERE resource_id = $1`,
@@ -316,6 +315,26 @@ app.patch<{ comment_id: number }>("/comments/:comment_id", async (req, res) => {
     res.status(201).json(postData);
   }
 });
+
+//-----------------------------------------------------------------------------------------------------PATCH request to DATABASE tp update likes counter for comments
+app.patch<{ comment_id: number }>(
+  "/comments/likes/:comment_id",
+  async (req, res) => {
+    const comment_id = req.params.comment_id;
+    try {
+      await client.query(
+        `UPDATE comments SET comment_likes = (comments.comment_likes + 1) WHERE comment_id = $1`,
+        [comment_id]
+      );
+      res.status(200).json("Updated likes!");
+    } catch (error) {
+      res
+        .status(400)
+        .json("Failed to update the like count in comments table.");
+    }
+  }
+);
+
 //-----------------------------------------------------------------------------------------------------connecting to DATABASE
 connectToDBAndStartListening();
 
