@@ -181,6 +181,24 @@ app.delete<{ resource_id: number }>(
   }
 );
 
+//-----------------------------------------------------------------------------------------------------PATCH request to DATABASE tp update likes counter
+app.patch<{ resource_id: number }>(
+  "/resource/like/:resource_id",
+  async (req, res) => {
+    const resource_id = req.params.resource_id;
+    console.log(resource_id);
+    try {
+      await client.query(
+        `UPDATE resources SET resource_likes = (resources.resource_likes + 1) WHERE resource_id = $1`,
+        [resource_id]
+      );
+      res.status(200).json("Updated likes!");
+    } catch (error) {
+      res.status(400).json("Failed to update the like count.");
+    }
+  }
+);
+
 //-----------------------------------------------------------------------------------------------------PATCH request to DATABASE for resource by resource_id
 app.patch<{ resource_id: number }>(
   "/resources/:resource_id",
@@ -252,17 +270,17 @@ app.get<{ resource_id: number }>("/comments/:resource_id", async (req, res) => {
 
 app.post("/comments", async (req, res) => {
   const user_id = req.body.user_id;
-  const resource_id = req.body.resource_id
+  const resource_id = req.body.resource_id;
   const comment_text = req.body.comment_text;
 
   const text = `INSERT INTO comments(user_id, resource_id, comment_text,comment_time)  VALUES($1,$2,$3,now())`;
 
-  const values = [user_id,resource_id, comment_text];
+  const values = [user_id, resource_id, comment_text];
 
   const postData = await client.query(text, values);
 
   res.status(201).json(postData.rows);
-})
+});
 
 //-----------------------------------------------------------------------------------------------------DELETE request to DATABASE by comment_id
 app.delete<{ comment_id: number }>(
