@@ -183,7 +183,7 @@ app.delete<{ resource_id: number }>(
 
 //-----------------------------------------------------------------------------------------------------PATCH request to DATABASE tp update likes counter
 app.patch<{ resource_id: number }>(
-  "/resource/likes/:resource_id",
+  "/resources/likes/:resource_id",
   async (req, res) => {
     const resource_id = req.params.resource_id;
     try {
@@ -192,6 +192,23 @@ app.patch<{ resource_id: number }>(
         [resource_id]
       );
       res.status(200).json("Updated likes!");
+    } catch (error) {
+      res.status(400).json("Failed to update the like count.");
+    }
+  }
+);
+
+//-----------------------------------------------------------------------------------------------------PATCH request to DATABASE tp update likes counter
+app.patch<{ resource_id: number }>(
+  "/resources/dislikes/:resource_id",
+  async (req, res) => {
+    const resource_id = req.params.resource_id;
+    try {
+      await client.query(
+        `UPDATE resources SET resource_dislikes = (resources.resource_dislikes + 1) WHERE resource_id = $1`,
+        [resource_id]
+      );
+      res.status(200).json("Updated dislikes!");
     } catch (error) {
       res.status(400).json("Failed to update the like count.");
     }
