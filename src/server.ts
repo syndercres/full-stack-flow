@@ -250,6 +250,20 @@ app.get<{ resource_id: number }>("/comments/:resource_id", async (req, res) => {
   }
 });
 
+app.post("/comments", async (req, res) => {
+  const user_id = req.body.user_id;
+  const resource_id = req.body.resource_id
+  const comment_text = req.body.comment_text;
+
+  const text = `INSERT INTO comments(user_id, resource_id, comment_text,comment_time)  VALUES($1,$2,$3,now())`;
+
+  const values = [user_id,resource_id, comment_text];
+
+  const postData = await client.query(text, values);
+
+  res.status(201).json(postData.rows);
+})
+
 //-----------------------------------------------------------------------------------------------------DELETE request to DATABASE by comment_id
 app.delete<{ comment_id: number }>(
   "/comments/:comment_id",
