@@ -273,7 +273,7 @@ app.delete<{ comment_id: number }>(
       res.status(404).json(delete_comment);
     } else {
       await client.query(
-        `DELETE FROM comments WHERE resource_id = ${delete_comment}`
+        `DELETE FROM comments WHERE comment_id = ${delete_comment}`
       );
 
       res.status(200).json(delete_comment);
