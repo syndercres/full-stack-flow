@@ -288,10 +288,11 @@ app.post("/comments", async (req, res) => {
   const user_id = req.body.user_id;
   const resource_id = req.body.resource_id;
   const comment_text = req.body.comment_text;
+  const comment_likes = 0;
 
-  const text = `INSERT INTO comments(user_id, resource_id, comment_text,comment_time)  VALUES($1,$2,$3,now())`;
+  const text = `INSERT INTO comments(user_id, resource_id, comment_text,comment_time,comment_likes)  VALUES($1,$2,$3,now(),$4)`;
 
-  const values = [user_id, resource_id, comment_text];
+  const values = [user_id, resource_id, comment_text, comment_likes];
 
   const postData = await client.query(text, values);
 
