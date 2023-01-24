@@ -115,7 +115,7 @@ app.get<{ resource_id: number }>(
       res.status(404).json(resource_id);
     } else {
       const resource = await client.query(
-        `SELECT * FROM resources WHERE resource_id = ${resource_id}`
+        `SELECT * FROM resources WHERE resource_id = ${resource_id} ORDER BY resource_post_date`
       );
 
       res.status(200).json(resource.rows);
