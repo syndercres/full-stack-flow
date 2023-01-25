@@ -265,7 +265,9 @@ app.patch<{ resource_id: number }>(
 //-----------------------------------------------------------------------------------------------------requests to DATABASE for COMMENTS table
 //-----------------------------------------------------------------------------------------------------GET request to DATABASE for ALL comments
 app.get("/comments", async (req, res) => {
-  const comments = await client.query("SELECT * FROM comments ORDER BY comment_time");
+  const comments = await client.query(
+    "SELECT * FROM comments ORDER BY comment_time"
+  );
   res.status(200).json(comments);
 });
 
