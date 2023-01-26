@@ -101,7 +101,7 @@ app.patch<{ user_id: number }>("/users/:user_id", async (req, res) => {
 //-----------------------------------------------------------------------------------------------------requests to DATABASE for RESOURCES table
 //-----------------------------------------------------------------------------------------------------GET request to DATABASE for ALL resources
 app.get("/resources", async (req, res) => {
-  const resources = await client.query("SELECT * FROM resources ORDER BY resource_post_date");
+  const resources = await client.query("SELECT * FROM resources ORDER BY resource_post_date DESC");
   res.status(200).json(resources.rows);
 });
 
