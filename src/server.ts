@@ -279,7 +279,7 @@ app.get<{ resource_id: number }>("/comments/:resource_id", async (req, res) => {
     res.status(404).json(resource_id);
   } else {
     const resource = await client.query(
-      `SELECT * FROM comments WHERE resource_id = ${resource_id} ORDER BY comment_time`
+      `SELECT * FROM comments left join users on comments.user_id = users.user_id WHERE resource_id = ${resource_id} ORDER BY comment_time`
     );
 
     res.status(200).json(resource);
